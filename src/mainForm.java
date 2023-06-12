@@ -1,8 +1,12 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class mainForm extends JFrame {
+
+    private Menu b = new Menu();
 
     private JPanel mainPanel;
     private JTabbedPane tabbedPane1;
@@ -87,10 +91,81 @@ public class mainForm extends JFrame {
 
             }
         });
-    }
+        ingresarPlatoButton.addActionListener(new ActionListener() {
+
+            //El boton para el ingreso de platos solo efectuará solo si los 4 text field estan llenos
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (textIngresoNombre.getText () .isEmpty () || textAIngresoPlatos.getText () .isEmpty () || textIngresoCalorias.getText () .isEmpty ()|| textIngresoPreparacion.getText () .isEmpty ()){
+
+
+                JOptionPane.showMessageDialog (null, "No dejar campos vacios");
+                }
+            }
+
+        });
+        textoModifNombre.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (textoModifNombre.getText () .isEmpty () ){
+
+
+                    JOptionPane.showMessageDialog (null, "Tienes que ingresar el nombre del plato que vas a modificar");
+                }
+            }
+        });
+        eliminarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarPlatoNombRe();
+            }
+        });
+        textAIngresoPlatos.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+            }
+        });
+        QuemarDatosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        QuemarDatosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        QuemarDatosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generarPlatos();
+
+            }
+        });
+    };
 
     //Get mainPanel
     public JPanel getMainPanel() {
         return mainPanel;
+    }
+
+    public void eliminarPlatoNombRe() {
+        Plato l = b.eliminarPlatoPorNombre(textNombreEliminar.getText());
+        if (l != null) {
+            textAEliminar.setText(l.toString());
+        } else {
+            textAEliminar.setText("No se ha encontrado ningun plato con ese nombre.");
+        }
+    }
+
+    public void generarPlatos() {
+        String text = "Los platos que se han generado son: \n";
+        for (Plato plato : b.generarPlatos()) {
+            text += plato.toString() + "\n";
+        }
+        textAIngresoPlatos.setText(text);
     }
 }
